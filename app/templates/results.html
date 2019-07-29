@@ -5,6 +5,30 @@
     <body>
         <h1>Hello world!</h1>
         <p>We can build a full webpage here</p>
-        
+        <table>
+            <tr>
+                <th>Index</th>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Market Cap</th>
+                <th>P/E</th>
+                <th>52 Week Change</th>
+                <th>Shares Purchasable</th>
+          {% for stock in stocks %}
+            <tr class="{{ loop.cycle('odd', 'even') }}"> 
+                <td>{{loop.index}}</td>
+                <td>{{stock.symbol}}</td>
+                <td>{{stock.name}}</td>
+                <td>{{stock.price}}</td>
+                <td>{{stock.market_cap}}</td>
+                <td>{{stock.PE}}</td>
+                <td>{{stock.yearly_change}}</td>
+                <td>{{stock.shares}}</td>
+            </tr>
+          {% endfor %}
+                
+            </tr>
+        </table>
     </body>
 </html>

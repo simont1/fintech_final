@@ -14,5 +14,8 @@ def results():
     else:
         user_data = request.form
         investment_amount = float(user_data["investment_amount"])
+        print(investment_amount)
         display = back.price_range(investment_amount)
-    return render_template("results.html")
+        # print(display)
+        print(int(500/477.45))
+    return render_template("results.html", stocks = display)
