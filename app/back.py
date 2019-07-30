@@ -5,14 +5,14 @@ import csv
 stocks = [
 ]
 
-
+# with open('static/sp500.csv', newline='') as csvfile:
 with open('app/static/sp500.csv', newline='') as csvfile:
      lines = csv.reader(csvfile, delimiter=',', quotechar='|')
      for row in lines:
         #  print(row)
         #  print(row[0] + ", " + row[1] + "'s closing price is " + row[2])
         temp = int(row[4])
-        print(temp)
+        # print(temp)
         if (temp > 1000000000):
             temp = str(int(temp / 1000000000)) + " B"
         elif (temp > 1000000):

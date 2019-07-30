@@ -15,20 +15,21 @@
                 <th>P/E</th>
                 <th>52 Week Change</th>
                 <th>Shares Purchasable</th>
+            </tr>    
+            <form method="post" action="/individual">
           {% for stock in stocks %}
             <tr class="{{ loop.cycle('odd', 'even') }}"> 
                 <td>{{loop.index}}</td>
-                <td>{{stock.symbol}}</td>
+                <td><button type="submit" name="symbol" value={{stock.symbol}}> {{stock.symbol}} </button></td>
                 <td>{{stock.name}}</td>
                 <td>{{stock.price}}</td>
                 <td>{{stock.market_cap}}</td>
                 <td>{{stock.PE}}</td>
-                <td>{{stock.yearly_change}}</td>
+                <td>{{stock.yearly_change}}%</td>
                 <td>{{stock.shares}}</td>
             </tr>
           {% endfor %}
-                
-            </tr>
+            </form>
         </table>
     </body>
 </html>
