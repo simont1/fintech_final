@@ -25,5 +25,8 @@ def individual():
     else:
         user_data = request.form
         labels = api.labels(user_data['symbol'])
+        legend = "Daily data for the past year"
         values = api.values(user_data['symbol'])
-        return render_template("individual.html", values = values, labels = labels)
+        print(labels)
+        print(values)
+        return render_template("individual.html", values = values, labels = labels, legend = legend)

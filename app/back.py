@@ -1,6 +1,6 @@
 #functions go here
 import csv
-
+import matplotlib.pyplot as plt
 
 stocks = [
 ]
