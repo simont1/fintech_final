@@ -1,6 +1,6 @@
 #functions go here
 import csv
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 stocks = [
 ]
@@ -21,7 +21,10 @@ stocks = [
 #             temp = str(temp)
         
 #         stocks.append({"symbol": row[0], "name": row[1], "price": float(row[2]), "market_cap": temp, "PE": float(row[5]), "yearly_change": float(row[3])})
+
+#uncomment below line out when you are working with terminal
 # with open('static/sp5000.csv', newline='') as csvfile:
+#comment this out when you are just working with terminal
 with open('app/static/sp5000.csv', newline='') as csvfile:
     lines = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in lines:
@@ -56,7 +59,10 @@ def price_range(money):
         # else:
             # ret_arr.remove(stock)
     return ret_arr
-            
+
+#use this to see price range, all data            
 # print(price_range(5000))
+
+#use this to see just stocks 
 # for i in stocks:
     # print(i)

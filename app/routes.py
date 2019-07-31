@@ -22,7 +22,10 @@ def results():
         # print(investment_amount)
         display = back.price_range(investment_amount)
         # print(display)
+        volatility = user_data['volatility']
     return render_template("results.html", stocks = display)
+    
+    
 @app.route('/individual', methods=["GET", "POST"])
 def individual():
     if request.method == "GET":
