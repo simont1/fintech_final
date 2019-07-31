@@ -4,6 +4,24 @@
     <title> LOG IN </title>
   </head>
   <body>
+      
+    {% block error %}
+        {% if error %}
+            <font color="red">{% set msgs = get_flashed_messages() %}
+              {{ msgs[0] }}
+	      </font>
+        {% endif %}
+    {% endblock %}
+      
+    {% block success %}
+        {% if success %}
+            <font color="green">{% set msgs = get_flashed_messages() %}
+              {{ msgs[0] }}
+	      </font>
+        {% endif %}
+    {% endblock %}
+   
+      
     <br>
     <br>
     <br>
@@ -11,7 +29,7 @@
     <br>
     <br>
 
-    <form action="/auth" name="main" method="GET" placeholder="Username">
+    <form action="/auth" name="main" method="POST" >
       <input type="text" name="user" placeholder = 'username'>
       <br>
       <input type="text" name="pass" placeholder = 'password'>
@@ -30,12 +48,12 @@
     <br>
     <br>
 
-    <form action= "/register" method="GET">
+    <form action= "/register" method="POST">
       <input type = "text" name = "Username" placeholder = 'Username'><br>
       <input type = "text" name = "Password" placeholder = 'password'><br>
       <input type = "text" name = "Confirm_Password" placeholder = 'Retype your password'><br>
       <br>
       <input type = "submit" value="Register">
-      </form>
+      </form>   
   </body>
 </html>

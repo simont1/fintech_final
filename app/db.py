@@ -43,13 +43,7 @@ from datetime import datetime
 
 DB_FILE="profiles.db"
 
-def init():
-    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
-    c = db.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS userDirectory(username TEXT, password TEXT)")
-    c.execute("INSERT INTO userDirectory VALUES('admin','admin')")
-    db.commit()
-    db.close()
+
     
 def isUser(user):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -62,7 +56,6 @@ def isUser(user):
         return True
     return False
 
-# init()
 # print(isUser('admin'))
 
 def getPw(user):
@@ -121,7 +114,7 @@ def buy_stock2(user, stock, shares, price): #If existing shares are in portfolio
     db.close()
     return True
     
-buy_stock2("Simon", "CREATED", 100, 15.24)
+# buy_stock2("Simon", "CREATED", 100, 15.24)
 
 
 def stock_exists(user, stock):
@@ -169,8 +162,15 @@ def clearAll():
     db.commit()
     db.close()
     
-    
+def init():
+    db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
+    c = db.cursor()
+    # clearAll()
+    c.execute("CREATE TABLE IF NOT EXISTS userDirectory(username TEXT, password TEXT)")
+    db.commit()
+    db.close()
 
+init()
 # clearAll()
 # clear('admin')
 # register('Simon', 'Simon')
