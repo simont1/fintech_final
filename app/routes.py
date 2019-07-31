@@ -29,4 +29,4 @@ def individual():
         values = api.values(user_data['symbol'])
         print(labels)
         print(values)
-        return render_template("individual.html", values = values, labels = labels, legend = legend)
+        return render_template("individual.html", values = values, labels = labels, legend = legend, symbol = user_data['symbol'])
