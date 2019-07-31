@@ -5,8 +5,13 @@ from app import back, api
 
 @app.route('/')
 @app.route('/index')
+
 def index():
-    return render_template("quiz.html")
+    return render_template("index.html")
+@app.route('/quiz')
+def quiz():
+    return render_template("quiz.1.html")
+    
 @app.route('/results', methods=["GET", "POST"])
 def results():
     if request.method == "GET":
@@ -27,6 +32,6 @@ def individual():
         labels = api.labels(user_data['symbol'])
         legend = "Daily data for the past year"
         values = api.values(user_data['symbol'])
-        print(labels)
-        print(values)
+        # print(labels)
+        # print(values)
         return render_template("individual.html", values = values, labels = labels, legend = legend, symbol = user_data['symbol'])
