@@ -12,19 +12,19 @@ retstr = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MS
 # print(req.json()["Time Series (Daily)"])
 
 # print(sorted(stuff["Time Series (Daily)"]))
-for key in stuff["Time Series (Daily)"]:
-    ctr = 0
-    if ctr < 50:
-        # print(stuff["Time Series (Daily)"][key])
-        ctr += 1
-    else:
-        # print("Done")
-        break
+# for key in stuff["Time Series (Daily)"]:
+#     ctr = 0
+#     if ctr < 50:
+#         # print(stuff["Time Series (Daily)"][key])
+#         ctr += 1
+#     else:
+#         # print("Done")
+#         break
     
-for i in range(len(stuff["Time Series (Daily)"])):
-    if i > 50:
-        # print("Done")
-        break
+# for i in range(len(stuff["Time Series (Daily)"])):
+#     if i > 50:
+#         # print("Done")
+#         break
     # else:
         # print(stuff["Time Series (Daily)"])
 # https://www.alphavantage.co/query?function=SMA&symbol=MSFT&interval=weekly&time_period=10&series_type=open&apikey=demo

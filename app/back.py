@@ -1,25 +1,38 @@
 #functions go here
 import csv
+import matplotlib.pyplot as plt
 
 stocks = [
 ]
 
 # with open('static/sp500.csv', newline='') as csvfile:
-with open('app/static/sp500.csv', newline='') as csvfile:
-     lines = csv.reader(csvfile, delimiter=',', quotechar='|')
-     for row in lines:
-        #  print(row)
-        #  print(row[0] + ", " + row[1] + "'s closing price is " + row[2])
+# with open('app/static/sp500.csv', newline='') as csvfile:
+#      lines = csv.reader(csvfile, delimiter=',', quotechar='|')
+#      for row in lines:
+#         #  print(row)
+#         #  print(row[0] + ", " + row[1] + "'s closing price is " + row[2])
+#         temp = int(row[4])
+#         # print(temp)
+#         if (temp > 1000000000):
+#             temp = str(int(temp / 1000000000)) + " B"
+#         elif (temp > 1000000):
+#             temp = str(int(temp / 1000000)) + " M"
+#         else:
+#             temp = str(temp)
+        
+#         stocks.append({"symbol": row[0], "name": row[1], "price": float(row[2]), "market_cap": temp, "PE": float(row[5]), "yearly_change": float(row[3])})
+# with open('static/sp5000.csv', newline='') as csvfile:
+with open('app/static/sp5000.csv', newline='') as csvfile:
+    lines = csv.reader(csvfile, delimiter=',', quotechar='|')
+    for row in lines:
         temp = int(row[4])
-        # print(temp)
         if (temp > 1000000000):
             temp = str(int(temp / 1000000000)) + " B"
-        elif (temp > 1000000):
+        elif(temp > 1000000):
             temp = str(int(temp / 1000000)) + " M"
         else:
             temp = str(temp)
-        
-        stocks.append({"symbol": row[0], "name": row[1], "price": float(row[2]), "market_cap": temp, "PE": float(row[5]), "yearly_change": float(row[3])})
+        stocks.append({"symbol": row[0], "name": row[1], "price": float(row[2]), "market_cap": temp, "PE": float(row[5]), "yearly_change": float(row[3]), "sector": row[6]})
 
 # stocks =[
     # {"symbol": "GOOGL", "price": 1253.22},    

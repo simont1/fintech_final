@@ -62,8 +62,8 @@ def isUser(user):
         return True
     return False
 
-init()
-print(isUser('admin'))
+# init()
+# print(isUser('admin'))
 
 def getPw(user):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -95,21 +95,35 @@ def register(user, pw):
     db.close()
     
     
-def buy_stock(user, stock, shares):
+def buy_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
-    c.execute("INSERT INTO '{0}' VALUES('{1}', '{2}', '{3}')".format(user, stock, shares, datetime.utcnow()))
-    c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}')".format(user+"History", "BUY", stock, shares, datetime.utcnow()))
+    c.execute("INSERT INTO '{0}' VALUES('{1}', '{2}', '{3}', '{4}')".format(user, stock, shares, price, datetime.now()))
+    c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "BUY", stock, shares, price, datetime.now()))
     
     db.commit()
     db.close()
     
-# def buy_stock(user, stock, shares): #If existing shares are in portfolio
+def buy_stock2(user, stock, shares, price): #If existing shares are in portfolio
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
+    num = c.fetchone()
+    new_shares = int(num[0]) + shares
+    c.execute("SELECT purchase_price FROM {0} WHERE stock = '{1}'".format(user, stock))
+    old_purchase_price = c.fetchone()[0]
+    old_investment = old_purchase_price * float(num[0])
+    new_purchase_price = (old_investment + shares * price) / new_shares
+    c.execute("UPDATE '{0}' SET shares = '{1}' where stock = '{2}'".format(user, new_shares, stock))
+    c.execute("UPDATE '{0}' SET purchase_price = '{1}' where stock = '{2}'".format(user, new_purchase_price, stock))
+    c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "BUY", stock, shares, price, datetime.now()))
+    db.commit()
+    db.close()
+    return True
     
-    # db = sqlite3.connect(DB_FILE, check_same_thread=False)
-    # c = db.cursor()
-    
-    
+buy_stock2("Simon", "CREATED", 100, 15.24)
+
+
 def stock_exists(user, stock):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
@@ -120,14 +134,21 @@ def stock_exists(user, stock):
     if name != None and len(name) > 0:
         return True
     return False
+    
 
-def sell_stock(user, stock, shares):
+def sell_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
-    c.execute("SELECT stock FROM '{0}' WHERE stock = '{1}'".format(user, stock))
-    c.execute("INSERT INTO '{0}' VALUES('{1}', '{2}', '{3}')".format(user, stock, shares, datetime.utcnow()))
-    c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}')".format(user+"History", "SELL", stock, shares, datetime.utcnow()))
-    
+    c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
+    num = c.fetchone()
+    if int(num[0]) == shares:
+        c.execute("DELETE FROM '{0}' WHERE stock = '{1}'".format(user, stock))
+    elif int(num[0]) < shares:
+        return "You don't own that many shares, sale is invalid."
+    else:
+        new_shares = int(num[0]) - shares
+        c.execute("UPDATE '{0}' SET shares = '{1}' WHERE stock = '{2}'".format(user, new_shares, stock))
+        c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}')".format(user+"History", "SELL", stock, shares, datetime.now()))
     db.commit()
     db.close()
 
@@ -136,6 +157,8 @@ def clear(user):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.execute("DELETE FROM userDirectory WHERE username = '{0}'".format(user))
+    c.execute("DROP TABLE '{0}'".format(user))
+    c.execute("DROP TABLE '{0}'".format(user+"History"))
     db.commit()
     db.close()
     
@@ -150,6 +173,7 @@ def clearAll():
 
 # clearAll()
 # clear('admin')
-register('Simon', 'Simon')
-# register('Amulya', 'Amulya')
+# register('Simon', 'Simon')
+# clear('Simon')
+# register('Amulya', 'Amulya')a
 
