@@ -127,7 +127,10 @@ def individual():
 @app.route('/portfolio', methods=["GET", "POST"])
 def portfolio():
         if 'user' in session:
-            return render_template('portfolio.html')
+            stock_portfolio = db.view_stocks(session["user"])
+            stock_history = db.view_stocksHistory(session["user"])
+            # print(stock_portfolio)
+            return render_template('portfolio.html', stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
         else:
             flash('Not currently logged in')
-            return render_template('/')
+            return redirect('/')

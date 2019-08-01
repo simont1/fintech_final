@@ -67,11 +67,12 @@ def getPw(user):
     db.close()
     return x[0]
     
+    
 def register(user, pw):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
 
-    c.execute("INSERT INTO userDirectory VALUES('{0}','{1}')".format(user,pw))
+    c.execute("INSERT INTO userDirectory VALUES('{0}','{1}','{2}')".format(user,pw, 10000))
     #Adds user to the userDirectory db
     
     c.execute("CREATE TABLE IF NOT EXISTS '{0}' (stock TEXT, shares INTEGER, purchase_price REAL, purchase_date TEXT)".format(user))
@@ -79,7 +80,7 @@ def register(user, pw):
 
     c.execute("CREATE TABLE IF NOT EXISTS '{0}' (option TEXT, stock TEXT, shares INTEGER, purchase_price REAL, option_date TEXT)".format(user+"History"))
     #Creates the new db recording the user's trading history
-    
+     
     #Initial Add-ons :)
     c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}')".format(user, "CREATED", 0, 0, datetime.now()))
     c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "CREATED", 0, "CREATED", 0,  datetime.now()))
@@ -91,15 +92,65 @@ def view_stocks(user):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.execute("SELECT * FROM '{0}'".format(user))
+    x = c.fetchall()
+    retarr = []
+    for i in x:
+        if i != None:
+            retarr.append({"stock": i[0], "shares": i[1], "purchase_price": i[2], "purchase_date": i[3]})
+    return retarr
+    
+# print(view_stocks("Simon"))
+
+def view_stocksHistory(user):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT * FROM '{0}'".format(user+"History"))
+    x = c.fetchall()
+    retarr = []
+    for i in x:
+        if i != None:
+            retarr.append({"option": i[0], "stock": i[1], "shares": i[2], "purchase_price": i[3], "purchase_date": i[4]})
+    return retarr
+
+# # print(view_stocksHistory("Simon"))
+
+
+# def getMoney(user):
+#     db = sqlite3.connect(DB_FILE, check_same_thread=False)
+#     c = db.cursor()
+#     c.execute("SELECT money FROM userDirectory where username='{0}'".format(user))
+#     x=c.fetchone()
+#     # print(x)
+#     db.commit()
+#     db.close()
+#     return x[0]
+    
+# def setMoney(user, change):
+#     db = sqlite3.connect(DB_FILE, check_same_thread=False)
+#     c = db.cursor()
+#     c.execute("SELECT money FROM userDirectory where username='{0}'".format(user))
+#     x=c.fetchone()
+#     new_money = change + x[0]
+#     # c.execute("DROP TABLE '{0}'".format(user+"Funds"))    
+#     # c.execute("CREATE TABLE IF NOT EXISTS '{0}' (money REAL)".format(user+"Funds"))
+#     # c.execute("INSERT INTO '{0}' VALUES ('{1}')".format(user+"Funds", new_money))
+#     c.execute("UPDATE userDirectory SET money = '{0}' WHERE username = '{1}'".format(new_money, user))
+#     x=c.fetchone()
+#     db.commit()
+#     db.close()
     
 def buy_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.execute("INSERT INTO '{0}' VALUES('{1}', '{2}', '{3}', '{4}')".format(user, stock, shares, price, datetime.now()))
     c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "BUY", stock, shares, price, datetime.now()))
-    
+    # purchase_amount = shares * price * -1
+    # setMoney(user, purchase_amount)
     db.commit()
     db.close()
+    
+    
+# buy_stock("Simon", "MSFT", 40, 2)
     
 def buy_stock2(user, stock, shares, price): #If existing shares are in portfolio
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -107,6 +158,8 @@ def buy_stock2(user, stock, shares, price): #If existing shares are in portfolio
     c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
     num = c.fetchone()
     new_shares = int(num[0]) + shares
+    # purchase_amount = shares * price * -1
+    # setMoney(user, purchase_amount)
     c.execute("SELECT purchase_price FROM {0} WHERE stock = '{1}'".format(user, stock))
     old_purchase_price = c.fetchone()[0]
     old_investment = old_purchase_price * float(num[0])
@@ -138,6 +191,8 @@ def sell_stock(user, stock, shares, price):
     c = db.cursor()
     c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
     num = c.fetchone()
+    # sell_amount = shares * price
+    # setMoney(user, sell_amount)
     if int(num[0]) == shares:
         c.execute("DELETE FROM '{0}' WHERE stock = '{1}'".format(user, stock))
     elif int(num[0]) < shares:
@@ -170,14 +225,14 @@ def init():
     db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
     c = db.cursor()
     # clearAll()
-    c.execute("CREATE TABLE IF NOT EXISTS userDirectory(username TEXT, password TEXT)")
+    c.execute("CREATE TABLE IF NOT EXISTS userDirectory(username TEXT, password TEXT, money REAL)")
     db.commit()
     db.close()
 
-init()
+# init()
 # clearAll()
 # clear('admin')
-# register('Simon', 'Simon')
+# register('Simon', 'Simon', 10000)
 # clear('Simon')
 # register('Amulya', 'Amulya')
-
+# getMoney("Simon")
