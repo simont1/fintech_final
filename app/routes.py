@@ -126,11 +126,8 @@ def individual():
         
 @app.route('/portfolio', methods=["GET", "POST"])
 def portfolio():
-    if request.method=="GET":
-        return "Nothing to see here! GO back."
-    else:
         if 'user' in session:
             return render_template('portfolio.html')
         else:
             flash('Not currently logged in')
-            return render_template('/individual')
+            return render_template('/')
