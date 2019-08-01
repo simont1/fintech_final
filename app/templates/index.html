@@ -50,10 +50,12 @@
               </li> 
               <li class="nav-item">
                 <a class="nav-link page-scroll" href="#contact">Contact</a>
-              </li> 
-              <li class="nav-item">
-                <a class="btn btn-singin" href="#">Sign In</a>
               </li>
+              {% block sign_option %}
+              <li class="nav-item">
+                <a class="btn btn-singin" href="/login">Sign In</a>
+              </li>
+              {% endblock %}
             </ul>
           </div>
         </div>

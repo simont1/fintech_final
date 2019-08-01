@@ -12,7 +12,10 @@ session = {}
 @app.route('/index')
 
 def index():
-    return render_template("index.html")
+    if 'user' in session:
+        return render_template("index3.html")
+    else:
+        return render_template("index.html")
     
 @app.route('/login')
 def login():
@@ -61,6 +64,12 @@ def register():
 @app.route('/quiz')
 def quiz():
     return render_template("quiz.1.html")
+    
+@app.route('/logout')
+def logout():
+    if 'user' in session:
+        session.clear()
+    return redirect('/')
     
 @app.route('/results', methods=["GET", "POST"])
 def results():

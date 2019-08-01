@@ -2,19 +2,30 @@
 <html>
 <head>  
 <script>
+
 window.onload = function () {
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	theme: "light2",
 	title:{
-	text: "Graph"
+	text: "Stock Price over the Past Year"
 	},
 	axisY:{
 		includeZero: false
 	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
 	data: [{        
-		type: "line",       
+		type: "line",		
+		showInLegend: true,
+		markerSize: 0,
+		name: "Daily Price",
 		dataPoints: [
 			{% for item in values %}
 				{y: {{item}} },
@@ -32,9 +43,42 @@ var chart = new CanvasJS.Chart("chartContainer", {
 			// { y: 480 },
 			// { y: 510 }
 		]
-	}]
+		},
+		{
+		type: "line",		
+		showInLegend: true,
+		markerSize: 0,
+		name: "SMA 10",
+		dataPoints: [
+			{% for item in SMA %}
+				{y: {{item}} },
+			{% endfor %}
+			// { y: 450 },
+			// { y: 414},
+			// { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+			// { y: 460 },
+			// { y: 450 },
+			// { y: 500 },
+			// { y: 480 },
+			// { y: 480 },
+			// { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			// { y: 500 },
+			// { y: 480 },
+			// { y: 510 }
+			]
+		}
+		]
 });
 chart.render();
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
 
 }
 </script>
@@ -42,5 +86,21 @@ chart.render();
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<br>
+<br>
+<br>
+Style this <br>
+{{info.symbol}} <br>
+{{info.open}} <br>
+{{info.high}} <br>
+{{info.low}} <br>
+{{info.price}} <br>
+{{info.volume}} <br>
+{{info.previous_close}} <br>
+{{info.change}} <br>
+{{info.change_percent}} <br>
+
+
 </body>
 </html>
