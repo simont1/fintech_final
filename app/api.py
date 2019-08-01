@@ -78,7 +78,7 @@ def find_stock(symbol):
     req = requests.get(retstr)
     temp = req.json()
     retdict = {}
-    print(temp)
+    # print(temp)
     temp = temp['Global Quote']
     retdict["symbol"] = temp["01. symbol"]
     retdict["open"] = temp["02. open"]

@@ -87,6 +87,10 @@ def register(user, pw):
     db.commit()
     db.close()
     
+def view_stocks(user):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT * FROM '{0}'".format(user))
     
 def buy_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -175,5 +179,5 @@ init()
 # clear('admin')
 # register('Simon', 'Simon')
 # clear('Simon')
-# register('Amulya', 'Amulya')a
+# register('Amulya', 'Amulya')
 
