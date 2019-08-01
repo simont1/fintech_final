@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script>
 
 window.onload = function () {
@@ -87,19 +89,42 @@ function toogleDataSeries(e){
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
+
+
+
 <br>
 <br>
 <br>
-Style this <br>
-{{info.symbol}} <br>
-{{info.open}} <br>
-{{info.high}} <br>
-{{info.low}} <br>
-{{info.price}} <br>
-{{info.volume}} <br>
-{{info.previous_close}} <br>
-{{info.change}} <br>
-{{info.change_percent}} <br>
+
+<div class="container">
+	<div class="row">
+		<div class="col" style="text-align:center">
+			<h1> {{info.symbol}} </h1>
+		</div>
+	</div>
+		
+	<div class="row">
+	    <div class="col-sm">
+	    	Current Price: {{info.price}} <br>
+	      	Open: {{info.open}} <br>
+			High: {{info.high}} <br>
+			Low: {{info.low}}
+	    </div>
+	    <div class="col-sm">
+      		Volume: {{info.volume}} <br>
+			Previous Close: {{info.previous_close}} <br>
+			Change: {{info.change}} <br>
+			Change Percent: {{info.change_percent}}
+	    </div>
+  	</div>
+ 
+	Purchase your shares here
+	<form action="/portfolio">
+		<input type="text" name="num Shares" value="Shares"/>
+		<input type="submit" value="Purchase!"/>
+	</form>
+</div>
+
 
 
 </body>

@@ -48,6 +48,14 @@ def register():
     password = data['Password']
     confirm_password = data["Confirm_Password"]
     
+    if len(username) == 0:
+        flash("Username field cannot be left blank")
+        return render_template('login.html', error=True)
+    
+    if len(password) == 0:
+        flash("Password field cannot be left blank")
+        return render_template('login.html', error=True)
+    
     if password != confirm_password:
         flash("Passwords do not match")
         return render_template('login.html', error=True)
@@ -77,15 +85,29 @@ def results():
         return "Nothing to see here! Go back."
     else:
         user_data = request.form
-        investment_amount = float(user_data["investment_amount"])
-        # print(investment_amount)
-        volatility = user_data["volatility"]
-        sector = user_data.getlist('sector')
-        print(sector)
-        display = back.filter_criteria(investment_amount, volatility, sector)
-        # print(display)
-        # print(volatility)
-    return render_template("results.html", stocks = display)
+        if user_data["investment_amount"].isdigit():
+            if 'volatility' in user_data:
+                if len(user_data.getlist('sector')) > 0:
+                    investment_amount = float(user_data["investment_amount"])
+                    # print(investment_amount)
+                    volatility = user_data["volatility"]
+                    print(volatility)
+                    sector = user_data.getlist('sector')
+                    print(sector)
+                    display = back.filter_criteria(investment_amount, volatility, sector)
+                    # print(display)
+                    # print(volatility)
+                    return render_template("results.html", stocks = display)
+                else:
+                    flash("Please check off at least one sector option")
+                return render_template("quiz.1.html", error = True)
+            else:
+                flash("Please check off one volatility option")
+            return render_template("quiz.1.html", error = True)
+        else:
+            flash("Please enter a number for investment amount")
+            return render_template("quiz.1.html", error = True)
+            
     
 @app.route('/individual', methods=["GET", "POST"])
 def individual():
@@ -96,6 +118,19 @@ def individual():
         labels = api.labels(user_data['symbol'])
         legend = "Daily data for the past year"
         values = api.values(user_data['symbol'])
+        SMA = api.find_SMA(user_data['symbol'])
+        info = api.find_stock(user_data['symbol'])
         # print(labels)
         # print(values)
-        return render_template("individual.html", values = values, labels = labels, legend = legend, symbol = user_data['symbol'])
+        return render_template("individual.html", values = values, labels = labels, legend = legend, symbol = user_data['symbol'], SMA = SMA, info = info)
+        
+@app.route('/portfolio', methods=["GET", "POST"])
+def portfolio():
+    if request.method=="GET":
+        return "Nothing to see here! GO back."
+    else:
+        if 'user' in session:
+            return render_template('portfolio.html')
+        else:
+            flash('Not currently logged in')
+            return render_template('/individual')
