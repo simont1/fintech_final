@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <title> LOG IN </title>
   </head>
   <body>
@@ -25,20 +28,26 @@
     <br>
     <br>
     <br>
+    <br>
+    <div class="container">
+      
+    <br>
     <b>Sign in Page</b>
-    <br>
-    <br>
-
     <form action="/auth" name="main" method="POST" >
+      <div class = "row">
       <input type="text" name="user" placeholder = 'username'>
       <br>
+      </div>
+      <div class = "row">
       <input type="password" name="pass" placeholder = 'password'>
+      </div>
       <br>
       <br>
       <button name="enter:" type="submit">
       Submit
       </button>
     </form>
+    
 
     <br>
     <br>
@@ -48,12 +57,29 @@
     <br>
     <br>
 
-    <form action= "/register" method="POST">
+    <form class = "col s12" action= "/register" method="POST">
+      <!--<div class = "row">-->
+      <div class ="input-field col s6">
       <input type = "text" name = "Username" placeholder = 'Username'><br>
+      <label for="Username">Username</label>
+      <!--</div>-->
+      </div>
+      <div class="input-field col s6">
+      </div>
+      <!--<div class = "row">-->
+      <div class="input-field col s6">
       <input type = "password" name = "Password" placeholder = 'password'><br>
+      <label for="Password">Password</label>
+      </div>
+      <!--</div>-->
+      <!--<div class = "row">-->
+      <div class ="input-field col s6">
       <input type = "password" name = "Confirm_Password" placeholder = 'Retype your password'><br>
+      </div>
+      <!--</div>-->
       <br>
       <input type = "submit" value="Register">
       </form>   
+    </div>
   </body>
 </html>
