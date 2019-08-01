@@ -99,7 +99,7 @@ def view_stocks(user):
             retarr.append({"stock": i[0], "shares": i[1], "purchase_price": i[2], "purchase_date": i[3]})
     return retarr
     
-<<<<<<< HEAD
+
 # print(view_stocks("Simon"))
 
 def view_stocksHistory(user):
@@ -139,10 +139,10 @@ def view_stocksHistory(user):
 #     x=c.fetchone()
 #     db.commit()
 #     db.close()
-=======
+
 # view_stocks("Simon")
 # print(view_stocks("Simon"))
->>>>>>> 667981c6683ce327565b3784f750ce70fc5a4b0e
+
     
 def buy_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
