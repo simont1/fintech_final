@@ -91,6 +91,15 @@ def view_stocks(user):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.execute("SELECT * FROM '{0}'".format(user))
+    x = c.fetchall()
+    retarr = []
+    for i in x:
+        if i != None:
+            retarr.append({"stock": i[0], "shares": i[1], "purchase_price": i[2], "purchase_date": i[3]})
+    return retarr
+    
+# view_stocks("Simon")
+# print(view_stocks("Simon"))
     
 def buy_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
