@@ -70,11 +70,13 @@ def results():
         user_data = request.form
         investment_amount = float(user_data["investment_amount"])
         # print(investment_amount)
-        display = back.price_range(investment_amount)
+        volatility = user_data["volatility"]
+        sector = user_data.getlist('sector')
+        print(sector)
+        display = back.filter_criteria(investment_amount, volatility, sector)
         # print(display)
-        volatility = user_data['volatility']
+        # print(volatility)
     return render_template("results.html", stocks = display)
-    
     
 @app.route('/individual', methods=["GET", "POST"])
 def individual():

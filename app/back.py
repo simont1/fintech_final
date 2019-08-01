@@ -46,14 +46,21 @@ with open('app/static/sp5000.csv', newline='') as csvfile:
 # ]
 
 
-def price_range(money):
+def filter_criteria(money, volatility, sector):
     # ret_arr = stocks
     ret_arr = []
     for stock in stocks:
-        if money > stock["price"]:
-            shares_available = money / stock["price"]
-            ret_arr.append(stock)
-            ret_arr[ret_arr.index(stock)]["shares"] = str(int(shares_available)) + " shares purchasable"
+        if (money > stock["price"] and 
+        ((abs(stock["yearly_change"]) < 20 and str(volatility) == "low") or 
+        (abs(stock["yearly_change"]) >= 20 and abs(stock["yearly_change"]) <= 50 and str(volatility) == "medium") or
+        (abs(stock["yearly_change"]) > 50 and str(volatility) == "high"))
+        ):
+            # print(len(sector))
+            for x in range(len(sector)):
+                if (sector[x] == stock["sector"]): 
+                    shares_available = money / stock["price"]
+                    ret_arr.append(stock)
+                    ret_arr[ret_arr.index(stock)]["shares"] = str(int(shares_available)) + " shares purchasable"
             # ret_arr[ctr]["shares"] =  str(int(shares_available)) + " shares purchasable"
             # ret_arr.append(stock["symbol"] + " " + str(int(shares_available)) + " shares purchasable")
         # else:
@@ -66,3 +73,4 @@ def price_range(money):
 #use this to see just stocks 
 # for i in stocks:
     # print(i)
+

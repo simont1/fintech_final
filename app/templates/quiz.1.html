@@ -153,7 +153,6 @@
         <center>
         <form method="post" action="/results">
             <input type="text" name="investment_amount" value="Enter investment amount"/>
-            <input type="submit" value="Submit"/>
             <br><br><br><br><br>
              <h3><center>What level of volatility do you want?</center></h3> 
             <div class="row">
@@ -194,7 +193,7 @@
                   </div>
                   <h4>High</h4>
                   <p>A high volatility means that a stock's value fluctuates dramatically, and is more unsteady.</p>
-                   <input type ="radio" name="volatility" value="high">
+                  <input type ="radio" name="volatility" value="high">
                 </div>
                 <!--</button>-->
                 </div>
@@ -225,7 +224,9 @@
                <div class="feature-info float-left">
                  <h4>Healthcare</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                  <input type="checkbox" id="healthcare" name="healthcare">
+                  <!--IF CODE DOESN'T WORK CHANGE VALUE BACK TO ID-->
+                  <!--<input type="checkbox" id="healthcare" name="healthcare">-->
+                  <input type="checkbox" name="sector" value="Health Care">
                </div>
             </div>
             <!-- End Fetatures -->
@@ -242,7 +243,7 @@
                <div class="feature-info float-left">
                  <h4>Finance</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                 <input type="checkbox" id="finance" name="finance">
+                 <input type="checkbox" name="sector" value="Financials">
                </div>
             </div>
             <!-- End Fetatures -->
@@ -259,7 +260,7 @@
                <div class="feature-info float-left">
                  <h4>Energy</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                 <input type="checkbox" id="energy" name="energy">
+                 <input type="checkbox" name="sector" value="Industrials">
                </div>
             </div>
             <!-- End Fetatures -->
@@ -276,7 +277,7 @@
                <div class="feature-info float-left">
                  <h4>Technology</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                 <input type="checkbox" id="technology" name="technology">
+                 <input type="checkbox" name="sector"  value="Information Technology">
                </div>
             </div>
             <!-- End Fetatures -->
@@ -293,7 +294,7 @@
                <div class="feature-info float-left">
                  <h4>Consumer</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                 <input type="checkbox" id="consumer" name="consumer">
+                 <input type="checkbox" name="sector" value="Consumer Discretionary">
                </div>
             </div>
             <!-- End Fetatures -->
@@ -310,12 +311,14 @@
                <div class="feature-info float-left">
                  <h4>Media</h4>
                  <p>Producing long lasting organic SEO results for <br> brand of different kinds for more than a decade,<br> we understand that’s your.</p>
-                 <input type="checkbox" id="media" name="media">
+                 <input type="checkbox" name="sector" value="Communication Services">
                </div>
             </div>
             <!-- End Fetatures -->
           </div>
            <!-- End Col -->
+            <br><br><br><br>
+        <input type="submit" value="Submit"/>   
         </form>
         </center> <br><br><br><br>
         
