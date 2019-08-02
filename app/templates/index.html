@@ -24,7 +24,13 @@
   </head>
   
   <body>
-
+  {% block error %}
+        {% if error %}
+            <div class="alert alert-warning" role="alert">{% set msgs = get_flashed_messages() %}
+              {{ msgs[0] }}
+          </div>
+        {% endif %}
+    {% endblock %}
     <!-- Header Section Start -->
     <header id="home" class="hero-area">    
       <div class="overlay">

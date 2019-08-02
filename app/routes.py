@@ -134,3 +134,81 @@ def portfolio():
         else:
             flash('Not currently logged in')
             return redirect('/')
+            
+@app.route('/purchase', methods=["GET", "POST"])
+def purchase():
+    if 'user' in session:
+        if request.method == "GET":
+            return "Nothing to see here! Go back."
+        else:
+            user_data = request.form
+            if user_data["shares"].isdigit():
+                if back.go_through(user_data['symbol']):
+                    if db.stock_exists(session['user'], user_data['symbol']):
+                        price = api.find_stock(user_data['symbol'])["price"]
+                        db.buy_stock2(session['user'], user_data['symbol'], int(user_data['shares']), price)
+                        stock_portfolio = db.view_stocks(session["user"])
+                        stock_history = db.view_stocksHistory(session["user"])
+                        flash(user_data['symbol'] + " has been added to your portfolio!")
+                        return render_template("portfolio.html", success = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+                    price = api.find_stock(user_data['symbol'])["price"]
+                    db.buy_stock(session['user'], user_data['symbol'], user_data['shares'], price)
+                    stock_portfolio = db.view_stocks(session["user"])
+                    stock_history = db.view_stocksHistory(session["user"])
+                    flash(user_data['symbol'] + " has been added to your portfolio!")
+                    return render_template("portfolio.html", success = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+                else:
+                    flash(user_data['symbol'] + " is not a purchaseable stock")
+                    stock_portfolio = db.view_stocks(session["user"])
+                    stock_history = db.view_stocksHistory(session["user"])
+                    return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+            else:
+                flash("Shares must be a number")
+                stock_portfolio = db.view_stocks(session["user"])
+                stock_history = db.view_stocksHistory(session["user"])
+                return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+    else:
+        flash("Not currently logged in")
+        return redirect('/')
+        
+        
+@app.route('/sell', methods=["GET", "POST"])
+def sell():
+    if 'user' in session:
+        if request.method == "GET":
+            return "Nothing to see here! Go back."
+        else:
+            user_data = request.form
+            if user_data["shares"].isdigit():
+                if back.go_through(user_data['symbol']):
+                    if db.stock_exists(session['user'], user_data['symbol']):
+                        if db.get_shares(session['user'], user_data['symbol']) > int(user_data['shares']):
+                            price = api.find_stock(user_data['symbol'])["price"]
+                            db.sell_stock(session['user'], user_data['symbol'], int(user_data['shares']), price)
+                            stock_portfolio = db.view_stocks(session["user"])
+                            stock_history = db.view_stocksHistory(session["user"])
+                            flash("Sale was successful!")
+                            return render_template("portfolio.html", success = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+                        else:
+                            flash("You don't own that many shares")
+                            stock_portfolio = db.view_stocks(session["user"])
+                            stock_history = db.view_stocksHistory(session["user"])
+                            return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+                    else:
+                        flash("You do not own that stock")
+                        stock_portfolio = db.view_stocks(session["user"])
+                        stock_history = db.view_stocksHistory(session["user"])
+                        return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+                else:
+                    flash("Invalid stock. Stock is not tradeable")
+                    stock_portfolio = db.view_stocks(session["user"])
+                    stock_history = db.view_stocksHistory(session["user"])
+                    return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+            else:
+                flash("Number of shares must be a number")
+                stock_portfolio = db.view_stocks(session["user"])
+                stock_history = db.view_stocksHistory(session["user"])
+                return render_template('portfolio.html', error = True, stock_portfolio = stock_portfolio, user = session['user'], stock_history = stock_history)
+    else:
+        flash("Must be logged in")
+        return redirect('/')

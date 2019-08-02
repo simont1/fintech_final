@@ -45,6 +45,14 @@ with open('app/static/sp5000.csv', newline='') as csvfile:
     # {"symbol": "", "price": }
 # ]
 
+def go_through(symbol):
+    for row in stocks:
+        if symbol == row['symbol']:
+            return True
+    return False
+        
+# print(go_through("AAPL"))
+
 
 def filter_criteria(money, volatility, sector):
     # ret_arr = stocks

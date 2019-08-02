@@ -111,6 +111,7 @@ def values(symbol):
 
 
 
+
 # find_data("AAL")
 # print(find_data("AAL"))
 # print(labels(""))

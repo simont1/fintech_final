@@ -95,7 +95,8 @@ def view_stocks(user):
     x = c.fetchall()
     retarr = []
     for i in x:
-        if i != None:
+        print(i)
+        if i != None and i[0] != "CREATED":
             retarr.append({"stock": i[0], "shares": i[1], "purchase_price": i[2], "purchase_date": i[3]})
     return retarr
     
@@ -109,7 +110,7 @@ def view_stocksHistory(user):
     x = c.fetchall()
     retarr = []
     for i in x:
-        if i != None:
+        if i != None and i[0] != "CREATED":
             retarr.append({"option": i[0], "stock": i[1], "shares": i[2], "purchase_price": i[3], "purchase_date": i[4]})
     return retarr
 
@@ -162,13 +163,20 @@ def buy_stock2(user, stock, shares, price): #If existing shares are in portfolio
     c = db.cursor()
     c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
     num = c.fetchone()
-    new_shares = int(num[0]) + shares
+    new_shares = int(num[0]) + int(shares)
     # purchase_amount = shares * price * -1
     # setMoney(user, purchase_amount)
     c.execute("SELECT purchase_price FROM {0} WHERE stock = '{1}'".format(user, stock))
     old_purchase_price = c.fetchone()[0]
-    old_investment = old_purchase_price * float(num[0])
-    new_purchase_price = (old_investment + shares * price) / new_shares
+    old_investment = int(old_purchase_price) * float(num[0])
+    # print(type(old_purchase_price))
+    # print(type(num[0]))
+    # print(type(old_investment))
+    new_amount = int(shares) * float(price)
+    print(new_amount)
+    # print(type(new_amount))
+    new_total = float(old_investment) + float(new_amount)
+    new_purchase_price = new_total / new_shares
     c.execute("UPDATE '{0}' SET shares = '{1}' where stock = '{2}'".format(user, new_shares, stock))
     c.execute("UPDATE '{0}' SET purchase_price = '{1}' where stock = '{2}'".format(user, new_purchase_price, stock))
     c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "BUY", stock, shares, price, datetime.now()))
@@ -191,6 +199,16 @@ def stock_exists(user, stock):
     return False
     
 
+def get_shares(user, stock):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT shares FROM '{0}' WHERE stock = '{1}'".format(user, stock))
+    num = c.fetchone()
+    db.commit()
+    db.close()
+    return int(num[0])
+    
+
 def sell_stock(user, stock, shares, price):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
@@ -205,7 +223,7 @@ def sell_stock(user, stock, shares, price):
     else:
         new_shares = int(num[0]) - shares
         c.execute("UPDATE '{0}' SET shares = '{1}' WHERE stock = '{2}'".format(user, new_shares, stock))
-        c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}')".format(user+"History", "SELL", stock, shares, datetime.now()))
+        c.execute("INSERT INTO '{0}' VALUES ('{1}', '{2}', '{3}', '{4}', '{5}')".format(user+"History", "SELL", stock, shares, price, datetime.now()))
     db.commit()
     db.close()
 

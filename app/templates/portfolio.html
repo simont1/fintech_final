@@ -13,6 +13,24 @@
     <title>Hello, world!</title>
   </head>
   <body>
+    
+    {% block error %}
+        {% if error %}
+            <div class="alert alert-warning" role="alert">{% set msgs = get_flashed_messages() %}
+              {{ msgs[0] }}
+          </div>
+        {% endif %}
+    {% endblock %}
+    
+    {% block success %}
+        {% if success %}
+            <div class="alert alert-success" role="alert">{% set msgs = get_flashed_messages() %}
+              {{ msgs[0] }}
+          </div>
+        {% endif %}
+    {% endblock %}
+   
+    
     <div class="header">
       <h1>{{user}}'s Portfolio</h1>
     </div>
@@ -33,7 +51,7 @@
           <input type="text" name="shares" value="# of shares">
         </div>
         <div class="col">
-            <button type="button" class="btn btn-primary">Purchase</button>
+            <button type="submit" class="btn btn-primary">Purchase</button>
         </div>
         </form>
         <form action = "/sell" method="post">
@@ -44,7 +62,7 @@
           <input type="text" name="shares" value="# of shares">
         </div>
           <div class="col">
-            <button type="button" class="btn btn-primary">Sell</button>
+            <button type="submit" class="btn btn-primary">Sell</button>
           </div>
         </form>
       </div>
@@ -63,14 +81,16 @@
             <th>Purchase Date</th>
         </tr>
         </thead>
+      <form method="post" action="/individual">
 	{% for item in stock_portfolio %}
 	<tr>
-        <td>{{item.stock}}</td>
+        <td><button type="submit" name="symbol" value={{item.stock}} class="btn btn-info"> {{item.stock}} </button></td>
         <td>{{item.shares}}</td>
         <td>{{item.purchase_price}}</td>
         <td>{{item.purchase_date}}</td>
     </tr>
 	{% endfor %}
+	</form>
 	</table>
 	<h2>Trade History for {{user}}</h2>
 	    <table style="text-align:center" class ="table table-striped">
